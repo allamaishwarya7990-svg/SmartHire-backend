@@ -27,6 +27,9 @@ public class User {
 
     private String role;
 
+    @Column(nullable = false)
+    private String status = "ACTIVE";
+
     public User() {
     }
 
@@ -36,6 +39,7 @@ public class User {
         this.password = password;
         this.phone = phone;
         this.role = role;
+        this.status = "ACTIVE";
     }
 
     public Long getId() {
@@ -84,5 +88,13 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

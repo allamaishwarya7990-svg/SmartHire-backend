@@ -113,7 +113,9 @@ public class SecurityConfig {
                 // Public APIs
                 .requestMatchers(
                         "/api/users/register",
-                        "/api/users/login"
+                        "/api/users/login",
+                        "/api/jobs/public",
+                        "/api/jobs/public/**"
                 ).permitAll()
 
                 // Role-based APIs

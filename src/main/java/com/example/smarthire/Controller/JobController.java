@@ -9,7 +9,6 @@ import com.example.smarthire.Dto.JobDto;
 import com.example.smarthire.Service.JobService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
 public class JobController {
 
     @Autowired

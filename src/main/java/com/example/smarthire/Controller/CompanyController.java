@@ -9,7 +9,6 @@ import com.example.smarthire.Service.CompanyService;
 
 @RestController
 @RequestMapping("/api/recruiter/company")
-@CrossOrigin(origins = "http://localhost:5173")
 public class CompanyController {
 
     @Autowired

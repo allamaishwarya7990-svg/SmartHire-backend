@@ -11,7 +11,6 @@ import com.example.smarthire.Service.UserSettingsService;
 
 @RestController
 @RequestMapping("/api/settings")
-@CrossOrigin(origins = "http://localhost:5173")
 public class UserSettingsController {
 
     @Autowired

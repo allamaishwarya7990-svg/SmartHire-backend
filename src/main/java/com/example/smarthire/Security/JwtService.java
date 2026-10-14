@@ -16,8 +16,11 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtService {
 
-    private final String SECRET_KEY =
-            "SmartHireSecretKeyForJwtAuthentication2026VerySecure";
+    // Read JWT secret from environment variable for production security.
+    // On Render: set JWT_SECRET to a long random string.
+    private final String SECRET_KEY = System.getenv("JWT_SECRET") != null
+            ? System.getenv("JWT_SECRET")
+            : "SmartHireSecretKeyForJwtAuthentication2026VerySecure";
 
     private SecretKey getSigningKey() {
 
@@ -34,7 +37,8 @@ public class JwtService {
                 .expiration(
                         new Date(
                                 System.currentTimeMillis()
-                                        + 1000 * 60 * 60
+                                        // 24-hour expiry instead of 1 hour
+                                        + 1000L * 60 * 60 * 24
                         )
                 )
                 .signWith(getSigningKey())

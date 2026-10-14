@@ -1,6 +1,8 @@
 package com.example.smarthire.Security;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -53,41 +55,38 @@ public class SecurityConfig {
         return configuration.getAuthenticationManager();
     }
 
-    // CORS configuration
+    // CORS configuration — reads ALLOWED_ORIGINS env var (comma-separated).
+    // On Render: set ALLOWED_ORIGINS=https://your-vercel-app.vercel.app
+    // Locally falls back to http://localhost:5173
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 
-        CorsConfiguration configuration =
-                new CorsConfiguration();
+        String allowedOriginsEnv = System.getenv("ALLOWED_ORIGINS");
+        List<String> allowedOrigins;
 
-        configuration.setAllowedOrigins(
-                List.of("http://localhost:5173")
-        );
+        if (allowedOriginsEnv != null && !allowedOriginsEnv.isBlank()) {
+            allowedOrigins = Arrays.stream(allowedOriginsEnv.split(","))
+                    .map(String::trim)
+                    .filter(s -> !s.isEmpty())
+                    .collect(Collectors.toList());
+        } else {
+            // Local development default
+            allowedOrigins = List.of("http://localhost:5173");
+        }
 
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(allowedOrigins);
         configuration.setAllowedMethods(
-                List.of(
-                        "GET",
-                        "POST",
-                        "PUT",
-                        "DELETE",
-                        "OPTIONS"
-                )
+                List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")
         );
-
         configuration.setAllowedHeaders(
-                List.of(
-                        "Authorization",
-                        "Content-Type"
-                )
+                List.of("Authorization", "Content-Type")
         );
+        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();
-
-        source.registerCorsConfiguration(
-                "/**",
-                configuration
-        );
+        source.registerCorsConfiguration("/**", configuration);
 
         return source;
     }

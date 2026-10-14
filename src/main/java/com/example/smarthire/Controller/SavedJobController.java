@@ -11,7 +11,6 @@ import com.example.smarthire.Service.SavedJobService;
 
 @RestController
 @RequestMapping("/api/jobseeker/saved-jobs")
-@CrossOrigin(origins = "http://localhost:5173")
 public class SavedJobController {
 
     @Autowired
